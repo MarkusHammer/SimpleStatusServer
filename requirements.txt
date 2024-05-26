@@ -1,0 +1,26 @@
+click==8.1.7
+    # via flask
+colorama==0.4.6
+    # via click
+flask==2.2.5
+    # via simplestatusserver (pyproject.toml)
+importlib-metadata==6.7.0
+    # via
+    #   click
+    #   flask
+itsdangerous==2.1.2
+    # via flask
+jinja2==3.1.4
+    # via flask
+markupsafe==2.1.5
+    # via
+    #   jinja2
+    #   werkzeug
+typing-extensions==4.7.1 ; python_version < "3.8"
+    # via
+    #   importlib-metadata
+    #   simplestatusserver (pyproject.toml)
+werkzeug==2.2.3
+    # via flask
+zipp==3.15.0
+    # via importlib-metadata

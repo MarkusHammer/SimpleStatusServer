@@ -1,0 +1,68 @@
+#pyproject.toml for simplestatusserver python module
+#THX https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#entry-points
+#THX https://pypi.org/project/validate-pyproject/
+
+[project]
+    dynamic = ["version", "readme"]
+    name = "simplestatusserver"
+    description = "A single file python module that simplifies creating and running a simple `Flask` server that reports a json formated dict. Intended to be used with simple apps that run in container style environments, allowing for a basic http server to report the status of the app."
+    authors = [{ name = "Markus Hammer", email = "107761433+MarkusHammer@users.noreply.github.com" }]
+    license = { file = "LICENSE" }
+    dependencies = ["flask", "typing-extensions;python_version<'3.8'"]
+    requires-python = ">=3"
+    classifiers = [
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Typing :: Typed",
+        "Natural Language :: English",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+        "Topic :: Software Development",
+        "Topic :: Software Development :: User Interfaces",
+        "Topic :: System :: Networking :: Monitoring",
+        "Topic :: System :: Monitoring",
+        "Topic :: Utilities",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3"
+    ]
+    keywords = [
+        "http",
+        "https",
+        "server",
+        "simple",
+        "status",
+        "monitor",
+        "monitoring",
+        "quick",
+        "single file",
+        "flask"
+    ]
+    [project.optional-dependencies]
+        dev = ["setuptools>=64.0.0", "pip-tools", "validate-pyproject[all]", "build", "twine"]
+        threading = ["threading"]
+    [project.urls]
+        Homepage = "https://github.com/MarkusHammer/SimpleStatusServer"
+        Github  = "https://github.com/MarkusHammer/SimpleStatusServer"
+        Issues = "https://github.com/MarkusHammer/SimpleStatusServer/issues"
+        "Pull Requests" = "https://github.com/MarkusHammer/SimpleStatusServer/pulls"
+        Git = "https://github.com/MarkusHammer/SimpleStatusServer.git"
+
+[build-system]
+    requires = ["setuptools>=64.0.0"]
+    build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+    zip-safe = true
+    [tool.setuptools.dynamic]
+        version = {attr = "simplestatusserver.__version__"}
+        readme = {file = ["README.md", "SECURITY.md", "LICENSE"], content-type = "text/markdown"}
+
+### NOTE THIS MUST BE BUILT USING A VERSION OF PYTHON >= 3.10, 3.9.1 and 3.8.7 #THX https://github.com/pypa/build/issues/255#issuecomment-794560752
+### below are the commands used on windows, feel free to use the most up to date version of python when necessary
+### py -3.12 -m pip install pip-tools validate-pyproject[all] build twine setuptools
+### validate-pyproject pyproject.toml
+### pip-compile --resolver=backtracking --no-header --upgrade --rebuild pyproject.toml
+### py -3.12 -m build
+### py -3.12 -m twine check dist/*
+### py -3.12 -m twine upload dist/* --verbose --username __token__
