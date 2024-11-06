@@ -20,7 +20,7 @@ typing-extensions==4.7.1 ; python_version < "3.8"
     # via
     #   importlib-metadata
     #   simplestatusserver (pyproject.toml)
-werkzeug==3.0.3
+werkzeug==3.0.6
     # via flask
 zipp==3.19.1
     # via importlib-metadata
