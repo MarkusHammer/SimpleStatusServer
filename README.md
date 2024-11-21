@@ -3,7 +3,7 @@
 This module is intended to be imported into any script requiring a simple HTTP status reporting page.
 This optionally supports threading as well, defining the ```run_threaded``` and ```make_thread``` methods.
 
-[![CodeQL](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml/badge.svg)](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml)
+[![CodeQL](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml/badge.svg)](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml) [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/markushammer)
 
 ## Setup
 
