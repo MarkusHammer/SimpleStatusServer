@@ -1,9 +1,11 @@
 # Git Auto Backup
 
-This module is intended to be imported into any script requiring a simple HTTP status reporting page.
-This optionally supports threading as well, defining the ```run_threaded``` and ```make_thread``` methods.
+[![Python versions](https://img.shields.io/pypi/pyversions/simplestatusserver.svg)](https://pypi.python.org/pypi/simplestatusserver/) [![PyPI](https://img.shields.io/pypi/v/simplestatusserver.svg)](https://pypi.python.org/pypi/simplestatusserver/) [![Downloads](https://pepy.tech/badge/simplestatusserver)](https://pepy.tech/project/simplestatusserver) [![Downloads per week](https://pepy.tech/badge/simplestatusserver/week)](https://pepy.tech/project/simplestatusserver) [![GitHub stars](https://img.shields.io/github/stars/MarkusHammer/SimpleStatusServer.svg)](https://github.com/MarkusHammer/SimpleStatusServer/stargazers)
 
-[![CodeQL](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml/badge.svg)](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/codeql.yml) [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/markushammer)
+[![CodeQL](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main)](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/github-code-scanning/codeql) [![Dependabot Updates](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/MarkusHammer/SimpleStatusServer/actions/workflows/dependabot/dependabot-updates)
+
+This module is intended to be imported into any script requiring a simple HTTP status reporting page.
+This optionally supports threading as well, defining the ``run_threaded`` and ``make_thread`` methods.
 
 ## Setup
 
@@ -13,11 +15,11 @@ This module can be installed using:
 
 ## Module Interface
 
-This module only contains a single (fully documented) class: ```SimpleStatusServer```.
+This module only contains a single (fully documented) class: ``SimpleStatusServer``.
 This cass can be instantiated to generate and when desired, run, a simple HTTP server.
-This server will report the data contained within that instance's ```status``` attribute as json.
-The instance itself may also be used as a dictionary, passing along all the data contained withing its ```status```
-If the ```threading``` module is imported (which can be checked using the module's ```STATUS_SERVER_THREADING_POSSIBLE``` constant), threading related running methods are also defined for this class.
+This server will report the data contained within that instance's ``status`` attribute as json.
+The instance itself may also be used as a dictionary, passing along all the data contained withing its ``status``
+If the ``threading`` module is imported (which can be checked using the module's ``STATUS_SERVER_THREADING_POSSIBLE`` constant), threading related running methods are also defined for this class.
 Refer to the docstrings for each method for more information.
 This module contains type hints.
 
@@ -60,8 +62,10 @@ This is licensed under the Mozilla Public License 2.0 (MPL 2.0) Licence. See the
 
 ## Credits
 
-This project uses the 'Flask' python module.
+This project uses the `flask` python module, and may also make use of the `typing-extentions` module for older python versions.
 
 While not required, feel free to credit "*Markus Hammer*" (or just "*Markus*") if you find this code or script useful for whatever you may be doing with it.
 
 **Thanks!**
+
+> Like what you see? Enough to buy me a [![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/markushammer) ?
