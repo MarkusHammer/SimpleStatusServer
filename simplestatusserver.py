@@ -1,6 +1,6 @@
 """
-A single file python module that simplifies creating and running a simple `Flask` server
-that reports a json formated dict.
+A single file python module that simplifies creating and running a
+simple `Flask` server that reports a json formated dict.
 Intended to be used with simple apps that run in container style environments,
 allowing for a basic http server to report the status of the app.
 """
@@ -8,41 +8,56 @@ allowing for a basic http server to report the status of the app.
 __version__ = "1.0.0.0"
 
 from flask import Flask, jsonify
+from collections import UserDict
+
+try:
+    from typing_extensions import TypeAlias
+except ImportError:
+    from typing import TypeAlias  # pyright: ignore[reportAttributeAccessIssue]
+
+try:
+    from typing_extensions import Any
+except ImportError:
+    from typing import Any  # pyright: ignore[reportAttributeAccessIssue]
+
 
 STATUS_SERVER_THREADING_POSSIBLE: bool = False
 try:
-    from threading import Thread
+    from threading import Thread  # pyright: ignore[reportRedeclaration]
     STATUS_SERVER_THREADING_POSSIBLE = True
 except ImportError:
-    pass
+    Thread: TypeAlias = Any
 
 try:
-    from typing import Union
-except ImportError:
     from typing_extensions import Union
+except ImportError:
+    from typing import Union
 
 try:
-    from typing import List
-except ImportError:
     from typing_extensions import List
+except ImportError:
+    from typing import List
 
 try:
-    from typing import Dict
-except ImportError:
     from typing_extensions import Dict
-
-try:
-    from typing import TypeAlias
 except ImportError:
-    from typing_extensions import TypeAlias
+    from typing import Dict
 
-StatusType:TypeAlias = Dict[str, "StatusValueType"]
-StatusValueType:TypeAlias = Union[float, int, str, bool, List["StatusValueType"], StatusType]
+StatusKeyType: TypeAlias = str
+StatusValueType: TypeAlias = Union[float,
+                                   int,
+                                   str,
+                                   bool,
+                                   List['StatusValueType'],
+                                   Dict[StatusKeyType, 'StatusValueType']
+                                   ]
 
-class SimpleStatusServer():
+
+class SimpleStatusServer(UserDict[StatusKeyType, StatusValueType]):
     """
     Create and run a simple `Flask` server that reports a json formated dict.
-    Intended to be used for simple apps that run in container style environments,
+    Intended to be used for simple apps that run in container style
+    environments,
     allowing for a basic http server to report the status of the app.
 
     If the `Threading` module is found in the environment,
@@ -52,11 +67,13 @@ class SimpleStatusServer():
 
     def __init__(self,
                  *args,
-                 import_name:Union[str, None] = None,
-                 init_status:Union[StatusType, None] = None,
+                 import_name: Union[str, None] = None,
+                 init_status: Union[Dict[StatusKeyType, 'StatusValueType'],
+                                    None
+                                    ] = None,
                  status_path: str = "/",
                  **kwargs
-                ):
+                 ):
         if import_name is None:
             import_name = type(self).__name__
 
@@ -69,88 +86,58 @@ class SimpleStatusServer():
         Use this to directly interact with the `Flask` server.
         """
 
-        self.status:StatusType = init_status
-        """
-        Holds the status dictionary reported on the status page.
-        """
+        if init_status is not None:
+            self.update(init_status)
 
         self.flask_app.add_url_rule(status_path,
                                     endpoint="status",
-                                    view_func=lambda:jsonify(self.status)
-                                   )
-        self.flask_app.register_error_handler(404, (lambda _:("PAGE NOT FOUND", 404)))
+                                    view_func=lambda: jsonify(self)
+                                    )
 
-    def __getitem__(self, index:str) -> StatusValueType:
-        return self.status[index]
-
-    def __setitem__(self, index:str, value:StatusValueType):
-        self.status[index] = value
-
-    def __delitem__(self, index:str):
-        del self.status[index]
-
-    def __iter__(self):
-        return iter(self.status)
-
-    def __contains__(self, index:str):
-        return index in self.status
-
-    def __len__(self):
-        return len(self.status)
-
-    def keys(self):
-        """
-        Returns the keys of the `status` dictionary.
-        """
-        return self.status.keys()
-
-    def values(self):
-        """
-        Returns the values of the `status` dictionary.
-        """
-        return self.status.keys()
-
-    def items(self):
-        """
-        Returns the items of the `status` dictionary.
-        """
-        return self.status.items()
-
-    def update(self, value:StatusType):
-        """
-        Updates the `status` dictionary with the given value.
-        """
-        self.status.update(value)
+        def __pnf__(_):
+            return ("PAGE NOT FOUND", 404)
+        self.flask_app.register_error_handler(404, __pnf__)
 
     def run(self, *args, **kwargs):
         """
         Run the server.
         Accepts all args and kwargs that a `Flask` object's `run` method would.
         NOTE: THIS, LIKE ```Flask.run()``` IS A BLOCKING METHOD!
-        USE ```run_threaded``` IF YOU WISH TO QUICKLY RUN THIS SERVER IN A NON BLOCKING FASHION
+        USE ```run_threaded``` IF YOU WISH TO QUICKLY
+        RUN THIS SERVER IN A NON BLOCKING FASHION
         """
         return self.flask_app.run(*args, **kwargs)
 
     if STATUS_SERVER_THREADING_POSSIBLE:
-        def run_threaded(self, *args, **kwargs) -> Thread: #type:ignore
+        def run_threaded(self,
+                         *args,
+                         **kwargs
+                         ) -> Thread:  # pyright:ignore[reportInvalidTypeForm]
             """
             Runs the server in a seprate daemon thread.
-            Accepts all args and kwargs that a `Flask` object's `run` method would.
+            Accepts all args and kwargs that a `Flask` object's `run`
+            method would.
             """
             thread = self.make_thread(*args, **kwargs)
             thread.start()
             return thread
 
-        def make_thread(self, *args, **kwargs) -> Thread: #type:ignore
+        def make_thread(self,
+                        *args,
+                        **kwargs
+                        ) -> Thread:  # pyright: ignore[reportInvalidTypeForm]
             """
-            Create a `Thread` object that will run the server in a seprate daemon thread.
-            Accepts all args and kwargs that a `Flask` object's `run` method would.
+            Create a `Thread` object that will run the server in a seprate
+            daemon thread.
+            Accepts all args and kwargs that a `Flask` object's `run`
+            method would.
             """
-            #This must be set if we are running this threaded, especially if running it debug
+            # This must be set if we are running this threaded,
+            # especially if running it debug
             kwargs["use_reloader"] = False
-            return Thread(target=self.run, #type:ignore
+            return Thread(target=self.run,
                           name=self.flask_app.import_name,
                           args=args,
                           kwargs=kwargs,
                           daemon=True
-                         )
+                          )   # pyright: ignore[reportAttributeAccessIssue]
