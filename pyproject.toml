@@ -3,13 +3,14 @@
 #THX https://pypi.org/project/validate-pyproject/
 
 [project]
-    dynamic = ["version", "readme"]
+    dynamic = ["readme"]
     name = "simplestatusserver"
     description = "A single file python module that simplifies creating and running a simple `Flask` server that reports a json formated dict. Intended to be used with simple apps that run in container style environments, allowing for a basic http server to report the status of the app."
     authors = [{ name = "Markus Hammer", email = "107761433+MarkusHammer@users.noreply.github.com" }]
     license = { file = "LICENSE" }
-    requires-python = ">=3"
+    version = "1.1.0.0"
     dependencies = ["flask", "typing-extensions;python_version<'3.10'"]
+    requires-python = ">=3.2"
     classifiers = [
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Development Status :: 5 - Production/Stable",
@@ -36,10 +37,12 @@
         "monitoring",
         "quick",
         "single file",
-        "flask"
+        "flask",
+        "json",
+        "page"
     ]
     [project.optional-dependencies]
-        dev = ["setuptools>=64.0.0", "pip-tools", "validate-pyproject[all]", "build", "twine"]
+        dev = ["setuptools>=64.0.0", "pip-tools", "validate-pyproject[all]", "build", "twine>=6", "packaging>=25"]
         threading = ["threading"]
     [project.urls]
         Homepage = "https://github.com/MarkusHammer/SimpleStatusServer"
@@ -49,20 +52,10 @@
         Git = "https://github.com/MarkusHammer/SimpleStatusServer.git"
 
 [build-system]
-    requires = ["setuptools>=64.0.0"]
+    requires = ["setuptools>=64.0.0", "twine>=6", "packaging>=25"]
     build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
     zip-safe = true
     [tool.setuptools.dynamic]
-        version = {attr = "simplestatusserver.__version__"}
         readme = {file = ["README.md", "SECURITY.md", "LICENSE"], content-type = "text/markdown"}
-
-### NOTE THIS MUST BE BUILT USING A VERSION OF PYTHON >= 3.10, 3.9.1 and 3.8.7 #THX https://github.com/pypa/build/issues/255#issuecomment-794560752
-### below are the commands used on windows, feel free to use the most up to date version of python when necessary
-### py -3.12 -m pip install pip-tools validate-pyproject[all] build twine setuptools
-### validate-pyproject pyproject.toml
-### pip-compile --resolver=backtracking --no-header --upgrade --rebuild pyproject.toml
-### py -3.12 -m build
-### py -3.12 -m twine check dist/*
-### py -3.12 -m twine upload dist/* --verbose --username __token__

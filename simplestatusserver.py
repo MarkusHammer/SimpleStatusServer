@@ -5,8 +5,6 @@ Intended to be used with simple apps that run in container style environments,
 allowing for a basic http server to report the status of the app.
 """
 
-__version__ = "1.0.0.0"
-
 from flask import Flask, jsonify
 from collections import UserDict
 
